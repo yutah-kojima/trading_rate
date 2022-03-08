@@ -18,15 +18,15 @@
     },
 
     "NOTIFICATION" : {
-        "web_hook_url" : "https://hooks.slack.com/services/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",
+        "web_hook_url" : "SlackのウェブホックURL",
         "username" : "為替通知bot",
-        "token" : "xoxb-3001380450867-3169400831361-tKZYSApBO7zLKBrgrk5qot7h",
-        "channel" : "#app-notification"
+        "token" : "Slackのトークン",
+        "channel" : "Slackの通知チャンネル"
     },
 
     "FLASK" : {
         "reflesh_interval" : 10,
-        "access_link" : "http://192.168.0.15:5000",
+        "access_link" : "IPアドレス",
         "file_type" : "png"
     },
 
