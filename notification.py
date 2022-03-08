@@ -25,19 +25,24 @@ class Notification:
     def do(self):
         """Slackへ通知
         """
+        
         message = self.db.select_trading_result()
         files = {'file': open("./figure/graph.png", 'rb')}
-        param = {
+        params = {
             "token":self.token,
             "channels":self.channel,
-            "filename":"pragh.jpg",
+            #"filename":"gragh.png",
             "initial_comment": message
-        }
-        
-        requests.post(url="https://slack.com/api/files.upload", params=param, files=files)
+            #"title":"this is title"
+            }
+        r = requests.post('https://slack.com/api/files.upload',
+                          params=params,
+                          files=files)
+        print(r.json())
         """
         requests.post(self.web_hook_url,data=json.dumps({
             "text" : message,
             "username" : self.username
-        }, files = files))
+            }), files = files)
         """
+        return r
