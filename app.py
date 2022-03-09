@@ -5,7 +5,6 @@ import json
 import atexit
 
 #Flask
-from webserver import Web
 from flask import Flask, render_template, make_response
 
 #Database
@@ -35,7 +34,6 @@ with open('./config.json','r') as config_file:
 
 #インスタンス作成
 scr = Scraping()
-web = Web()
 db = Database()
 graph = Graph()
 schedule = Scheduler()

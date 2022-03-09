@@ -1,0 +1,8 @@
+APScheduler
+beautifulsoup4
+flask
+japanize-matplotlib
+matplotlib
+requests
+atexit
+decimal

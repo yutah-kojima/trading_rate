@@ -1,33 +1,32 @@
 {
     
     "SCHEDULER" : {
-        "count_triger" : 60,
+        "count_triger" : 15,
         "triger_time" : 10
     },
 
     "DATABASE" : {
-        "data_quality" : 60
+        "db_path" : "money_order.db",
+        "data_quality" : 15
     },
 
     "SCRAPING" : {
-        "url" : "https://info.finance.yahoo.co.jp/fx/detail/?code={}=FX",
         "country_code" : [
-            "USD",
+            "EUR",
             "JPY"
         ]
     },
 
     "NOTIFICATION" : {
-        "web_hook_url" : "https://hooks.slack.com/services/*********",
+        "web_hook_url" : "SlackのウェブホックURL",
         "username" : "為替通知bot",
-        "token" : "xoxp-********",
-        "channel" : "https://*********.slack.com/archives/*****"
+        "token" : "Slackのトークン",
+        "channel" : "Slackの通知チャンネル"
     },
 
     "FLASK" : {
-        "db_path" : "money_order.db",
         "reflesh_interval" : 10,
-        "access_link" : "http://***.***.*.**:****",
+        "access_link" : "IPアドレス",
         "file_type" : "png"
     },
 
