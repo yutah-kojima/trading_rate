@@ -4,4 +4,3 @@ flask
 japanize-matplotlib
 matplotlib
 requests
-decimal
