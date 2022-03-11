@@ -1,0 +1,39 @@
+{
+    
+    "SCHEDULER" : {
+        "count_triger" : 15,
+        "triger_time" : 10
+    },
+
+    "DATABASE" : {
+        "db_path" : "money_order.db",
+        "data_quality" : 15
+    },
+
+    "SCRAPING" : {
+        "country_code" : [
+            "EUR",
+            "JPY"
+        ]
+    },
+
+    "NOTIFICATION" : {
+        "web_hook_url" : "SlackのウェブホックURL",
+        "username" : "為替通知bot",
+        "token" : "xoxb-********",
+        "channel" : "********"
+    },
+
+    "FLASK" : {
+        "reflesh_interval" : 10,
+        "access_link" : "IPアドレス",
+        "file_type" : "png"
+    },
+
+    "GRAPH" : {
+        "number_scale" : 10,
+        "x_label_rotation" : 30,
+        "picture_name" : "graph"
+    }
+
+}
