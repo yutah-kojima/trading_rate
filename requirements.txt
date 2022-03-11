@@ -5,3 +5,4 @@ japanize-matplotlib
 matplotlib
 requests
 slack_sdk
+gunicorn
