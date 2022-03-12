@@ -1,0 +1,43 @@
+{
+    
+    "SCHEDULER" : {
+        "count_triger" : 15,
+        "triger_time" : 10
+    },
+
+    "DATABASE" : {
+        "db_path" : "money_order.db",
+        "data_quality" : 15
+    },
+
+    "SCRAPING" : {
+        "country_code" : [
+            "EUR",
+            "JPY"
+        ],
+        "utc_add_tz" : [
+            9,
+            "JST"
+        ]
+    },
+
+    "NOTIFICATION" : {
+        "web_hook_url" : "SlackのウェブホックURL",
+        "username" : "為替通知bot",
+        "token" : "変更してください。（Slackアプリボットのトークン）",
+        "channel" : "変更してください。（通知先チャンネル）"
+    },
+
+    "FLASK" : {
+        "reflesh_interval" : 10,
+        "access_link" : "変更してください。（IPアドレス）",
+        "file_type" : "png"
+    },
+
+    "GRAPH" : {
+        "number_scale" : 10,
+        "x_label_rotation" : 30,
+        "picture_name" : "graph"
+    }
+
+}

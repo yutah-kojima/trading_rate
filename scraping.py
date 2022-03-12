@@ -3,7 +3,7 @@
 
 import requests
 from bs4 import BeautifulSoup
-import datetime
+from datetime import datetime, timezone, timedelta
 import json
 
 class Scraping:
@@ -12,7 +12,9 @@ class Scraping:
             config = json.load(config_file)
             SCRAPING = config["SCRAPING"]
             self.country_code = ''.join(SCRAPING["country_code"])
-            self.url = "https://info.finance.yahoo.co.jp/fx/detail/?code={}=FX".format(self.country_code)
+            utc_add_tz = SCRAPING["utc_add_tz"]
+        self.tz = timezone(timedelta(hours=utc_add_tz[0]), utc_add_tz[1])
+        self.url = "https://info.finance.yahoo.co.jp/fx/detail/?code={}=FX".format(self.country_code)
 
     
     def get_chart_title(self):
@@ -37,7 +39,7 @@ class Scraping:
         ask = float(''.join(soup.select_one('#{}_detail_ask'.format(self.country_code)).find_all(text=True)))
     
         #日時取得
-        dt = datetime.datetime.now()
+        dt = datetime.now(self.tz)
         dt = dt.replace(microsecond=0)
 
         data_list = [dt,bid,ask]
