@@ -118,8 +118,11 @@ class Database:
             message = '為替[{}]{}分間速報\n'.format(chart_title, minutes)
            
             if profit_list != 0:
-                hugest_profit_data = max(profit_list)
-                message += '{}に買って、{}に売れば、{}の儲けでした。'.format(hugest_profit_data[1], hugest_profit_data[2], str(hugest_profit_data[0]) + currency_name)
+                hugest_profit_data = max(profit_list, default=0)
+                if hugest_profit_data == 0:
+                    message += '過去{}分以内では利益は出ませんでした。'.format(minutes)
+                else:
+                    message += '{}に買って、{}に売れば、{}の儲けでした。'.format(hugest_profit_data[1], hugest_profit_data[2], str(hugest_profit_data[0]) + currency_name)
             else:
                 message += '過去{}分以内では利益は出ませんでした。'.format(minutes)
         return message
