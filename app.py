@@ -41,6 +41,7 @@ notify = Notification()
 
 
 #定期実行
+db.data_insert() #apscheduler仕様として初回起動
 schedule.execute(db.data_insert)
 #アプリ通知
 schedule.notify(notify.do)

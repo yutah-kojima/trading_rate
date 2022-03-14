@@ -1,5 +1,5 @@
-config.json
 __pycache__
 .pytest_cache
 *.db
 tests/__pycache__
+drop_table.py

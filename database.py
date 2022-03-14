@@ -74,9 +74,11 @@ class Database:
         """
         with self.get_db() as con:
             cur = con.cursor()
-            cur.execute("SELECT id, datetime, bid, ask FROM %s WHERE runs = %d ORDER BY datetime LIMIT %d" % (self.table_name, self.runs, self.data_quality))
-            data = cur.fetchall()
-        
+            cur.execute("SELECT MAX(id) FROM %s WHERE runs = %d LIMIT %d" % (self.table_name, self.runs, self.data_quality))
+            for row in cur:
+                last_id = row
+            cur.execute("SELECT id, datetime, bid, ask FROM %s WHERE runs = %d ORDER BY id LIMIT %d, %d" % (self.table_name, self.runs, last_id[0] - self.data_quality, self.data_quality))
+            data = cur.fetchall()                
         return data
     
     def select_trading_result(self):
@@ -86,32 +88,40 @@ class Database:
             cur.execute("SELECT MAX(runs) FROM %s" % self.table_name)
             for row in cur:
                 current_runs = row[0]
-            #最新のidを取得
             cur.execute("SELECT MAX(id) FROM %s WHERE runs = %d LIMIT %d" % (self.table_name, current_runs, self.data_quality))
             for row in cur:
                 last_id = row
-            #最大の売値を取得
-            cur.execute("SELECT id, datetime, MAX(bid) FROM %s WHERE runs = %d LIMIT %d" % (self.table_name, current_runs, self.data_quality))
-            for row in cur:
-                max_bid_list = row
-            start_id = last_id[0] - self.data_quality +1
-            cur.execute("SELECT datetime, MIN(ask) FROM %s WHERE runs = %d AND id >= %d AND id < %d" % (self.table_name, current_runs, start_id, max_bid_list[0]))
-            for row in cur:
-                min_ask_list = row
-        minutes = int(self.triger_time * self.data_quality / 60)
-        chart_title = self.scr.get_chart_title()
-        currency_name = chart_title.split('/')[1]
-        message = '為替{}速報\n'.format(chart_title)
-        if isinstance(min_ask_list, float) == True:
-            #浮動小数の計算
-            profit =  Decimal(str(max_bid_list[2])) - Decimal(str(min_ask_list[1]))
-            purchasing_time = min_ask_list[0].time()
-            selling_time = max_bid_list[1].time()
-            message += '{}に買って、{}に売れば、{}の儲けでした。'.format(purchasing_time, selling_time, str(profit) + currency_name)
-        else:
-            message += '過去{}分以内では利益は出ませんでした。'.format(minutes)
-        print(message)
-        
+            cur.execute("SELECT id, datetime, bid, ask FROM %s WHERE runs = %d ORDER BY id LIMIT %d, %d" % (self.table_name, current_runs, last_id[0] - self.data_quality, self.data_quality))
+            data_list = cur.fetchall()
+            profit_list = []
+            
+            for i in range(1, len(data_list)):
+                print('i:{}'.format(i))
+                bid_data = data_list[i]
+                lowest_ask_data = min(data_list[:i],key=lambda x: x[3])
+                print('bid_data : {}'.format(bid_data))
+                print('ask_data : {}'.format(lowest_ask_data))
+                
+                
+                
+                profit = Decimal(str(bid_data[2])) - Decimal(str(lowest_ask_data[3])) 
+                
+                if profit > 0:
+                    purchasing_time = lowest_ask_data[1].time()
+                    selling_time = bid_data[1].time()
+                    profit_list.append([profit,purchasing_time,selling_time])
+                    print('len : {}'.format(len(profit_list)))
+                    print('profit_list : {}'.format(profit_list))
+            minutes = int(self.triger_time * self.data_quality / 60)
+            chart_title = self.scr.get_chart_title()
+            currency_name = chart_title.split('/')[1]
+            message = '為替[{}]{}分間速報\n'.format(chart_title, minutes)
+           
+            if profit_list != 0:
+                hugest_profit_data = max(profit_list)
+                message += '{}に買って、{}に売れば、{}の儲けでした。'.format(hugest_profit_data[1], hugest_profit_data[2], str(hugest_profit_data[0]) + currency_name)
+            else:
+                message += '過去{}分以内では利益は出ませんでした。'.format(minutes)
         return message
     
     def update_csv(self):

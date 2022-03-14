@@ -3,11 +3,7 @@
 
 from time_schedule import Scheduler
 import json
-import time
 from datetime import datetime,timedelta
-import tempfile
-import sqlite3
-import pytest
 from apscheduler.schedulers.background import BackgroundScheduler
 
 

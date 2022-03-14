@@ -6,4 +6,5 @@ notify = Notification()
 
 def test_do():
     
-    assert ('OK' in notify.do().json()) == True
+    assert notify.do().status_code == 200
+    #assert ('OK' in notify.do().json()) == True

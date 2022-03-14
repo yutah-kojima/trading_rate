@@ -29,4 +29,5 @@ def test_plot():
     #ファイルの作成日
     file_path = './figure/graph.png'
     create_time = os.path.getctime(file_path)
-    assert datetime.fromtimestamp(int(create_time)) == datetime.now().replace(microsecond=0)
+    time_difference = (datetime.now().replace(microsecond=0) - datetime.fromtimestamp(int(create_time)))
+    assert time_difference.seconds <= 1

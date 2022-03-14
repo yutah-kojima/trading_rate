@@ -7,6 +7,7 @@ matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 from io import BytesIO
 from matplotlib.backends.backend_agg import FigureCanvasAgg
+import matplotlib.dates as mdates
 
 import json
 
@@ -15,8 +16,6 @@ class Graph:
         with open('./config.json','r') as config_file:
             config = json.load(config_file)
             GRAPH = config["GRAPH"]
-            self.number_scale = GRAPH["number_scale"]
-            self.x_label_rotation = GRAPH["x_label_rotation"]
             self.picture_name = GRAPH["picture_name"]
             SCHEDULER = config["SCHEDULER"]
             self.count_triger = SCHEDULER["count_triger"]
@@ -46,6 +45,9 @@ class Graph:
         ax.plot(x,y_ask,label='Ask(買値)')
         ax.grid(which='both')
         ax.legend()
+        ax.tick_params(axis='x', rotation=30)
+        ax.get_yaxis().get_major_formatter().set_useOffset(False)
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
         if id_for_plot % self.count_triger == 0:
             plt.savefig('./figure/{}.png'.format(self.picture_name))
         canvas = FigureCanvasAgg(fig)
