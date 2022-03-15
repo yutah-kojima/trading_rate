@@ -40,14 +40,7 @@ class Database:
             # "TIMESTAMP"コンバータ関数 をそのまま ”DATETIME” にも使う
             sqlite3.dbapi2.converters['DATETIME'] = sqlite3.dbapi2.converters['TIMESTAMP']
             return g.DB
-    
-    """
-    def close_db(e=None):
-        DB = g.pop('DB', None)
-        if DB is not None:
-            DB.close()
-    """
-            
+                
     def data_insert(self):
         """DBへデータ追加
         """
@@ -96,13 +89,8 @@ class Database:
             profit_list = []
             
             for i in range(1, len(data_list)):
-                print('i:{}'.format(i))
                 bid_data = data_list[i]
                 lowest_ask_data = min(data_list[:i],key=lambda x: x[3])
-                print('bid_data : {}'.format(bid_data))
-                print('ask_data : {}'.format(lowest_ask_data))
-                
-                
                 
                 profit = Decimal(str(bid_data[2])) - Decimal(str(lowest_ask_data[3])) 
                 
@@ -110,8 +98,6 @@ class Database:
                     purchasing_time = lowest_ask_data[1].time()
                     selling_time = bid_data[1].time()
                     profit_list.append([profit,purchasing_time,selling_time])
-                    print('len : {}'.format(len(profit_list)))
-                    print('profit_list : {}'.format(profit_list))
             minutes = int(self.triger_time * self.data_quality / 60)
             chart_title = self.scr.get_chart_title()
             currency_name = chart_title.split('/')[1]

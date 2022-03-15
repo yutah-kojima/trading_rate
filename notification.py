@@ -19,17 +19,13 @@ class Notification:
             
             SCRAPING = config["SCRAPING"]
             self.country_code = ''.join(SCRAPING["country_code"])
-            
-            FLASK = config["FLASK"]
-            self.access_link = FLASK["access_link"]
-        self.db = Database()
         
     def do(self):
         """Slackへ通知
         """
-        
+        db = Database()      
         client = WebClient(self.token)
-        message = self.db.select_trading_result()        
+        message = db.select_trading_result()        
         
         files = "./figure/graph.png"
         
@@ -42,7 +38,5 @@ class Notification:
                 break
             else:
                 time.sleep(1)
-                print('looping')
-
         return r
     

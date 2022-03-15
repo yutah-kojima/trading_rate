@@ -42,7 +42,5 @@ class Scraping:
         dt = datetime.now(self.tz)
         dt = dt.replace(microsecond=0, tzinfo=None)
 
-        data_list = [dt,bid,ask]
-        #data_list = [date.strftime('%Y-%m-%d'),time.strftime('%H:%M:%S'),bid,ask]
-        
+        data_list = [dt,bid,ask]        
         return data_list
