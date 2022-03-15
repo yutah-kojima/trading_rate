@@ -24,7 +24,7 @@ def test_get_data():
     dt_now = datetime.now(tz).replace(microsecond=0, tzinfo=None)
     time_difference = dt_now - test_data[0]
     assert time_difference.seconds <= 1
-    assert isinstance(test_data[0], datetime.datetime) == True
+    assert isinstance(test_data[0], datetime) == True
     #assert [0.5] <= scr.get_data()[1] - datetime.datetime.now().time()
     #list[2]
     assert isinstance(test_data[1], float) == True

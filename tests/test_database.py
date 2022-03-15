@@ -4,7 +4,7 @@
 from database import Database
 from flask import g
 import json
-from datetime import datetime
+from datetime import datetime,timedelta, timezone
 import os
 
 """
@@ -40,13 +40,16 @@ def test_data_insert():
         config = json.load(config_file)
         SCRAPING = config["SCRAPING"]
         table_name = '_'.join(SCRAPING["country_code"])
+        utc_add_tz = SCRAPING["utc_add_tz"]
+    tz = timezone(timedelta(hours=utc_add_tz[0]), utc_add_tz[1])
+
     db = Database()
     db.data_insert()
     with db.get_db() as con:
         cur = con.cursor()
         cur.execute("SELECT runs, MAX(datetime) FROM %s" % table_name)
         for row in cur:
-            time_difference = datetime.now().replace(microsecond=0) - datetime.strptime(row[1], '%Y-%m-%d %H:%M:%S')
+            time_difference = datetime.now(tz).replace(microsecond=0,tzinfo=None) - datetime.strptime(row[1], '%Y-%m-%d %H:%M:%S')
             test_runs = row[0]
             assert time_difference.seconds <= 1
         #後処理(入力データ削除)
