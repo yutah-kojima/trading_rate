@@ -1,5 +1,6 @@
 from scraping import Scraping
-import datetime
+from datetime import datetime, timezone, timedelta
+import json
 
 scr = Scraping()
 
@@ -8,14 +9,20 @@ def test_get_chart_title():
     assert ('/' in scr.get_chart_title()) == True
     
 def test_get_data():
-    #mocker.patch.object(scr, ("date","time","bid","ask"))
+    with open('./config.json','r') as config_file:
+        config = json.load(config_file)
+        SCRAPING = config["SCRAPING"]
+        utc_add_tz = SCRAPING["utc_add_tz"]
+    tz = timezone(timedelta(hours=utc_add_tz[0]), utc_add_tz[1])
+
     test_data = scr.get_data()
     #return全体
     assert len(test_data) == 3
     assert isinstance(test_data, list) == True
     
     #list[0]
-    time_difference = datetime.datetime.now() - test_data[0]
+    dt_now = datetime.now(tz).replace(microsecond=0, tzinfo=None)
+    time_difference = dt_now - test_data[0]
     assert time_difference.seconds <= 1
     assert isinstance(test_data[0], datetime.datetime) == True
     #assert [0.5] <= scr.get_data()[1] - datetime.datetime.now().time()

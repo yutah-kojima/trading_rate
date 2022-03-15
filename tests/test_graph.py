@@ -3,7 +3,8 @@
 
 from graph import Graph
 import os
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+import json
 
 def test_plot():
     graph = Graph()
@@ -75,5 +76,11 @@ def test_plot():
     #ファイルの作成日
     file_path = './figure/graph.png'
     create_time = os.path.getctime(file_path)
-    time_difference = (datetime.now().replace(microsecond=0) - datetime.fromtimestamp(int(create_time)))
+    with open('./config.json','r') as config_file:
+        config = json.load(config_file)
+        SCRAPING = config["SCRAPING"]
+        utc_add_tz = SCRAPING["utc_add_tz"]
+    tz = timezone(timedelta(hours=utc_add_tz[0]), utc_add_tz[1])
+    dt_now = datetime.now(tz).replace(microsecond=0, tzinfo=None)
+    time_difference = (dt_now- datetime.fromtimestamp(int(create_time)))
     assert time_difference.seconds <= 5
