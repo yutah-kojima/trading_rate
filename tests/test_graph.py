@@ -76,13 +76,11 @@ def test_plot():
     #ファイルの作成日
     file_path = './figure/graph.png'
     create_time = os.path.getctime(file_path)
-    print('create_time : {}'.format(create_time))
     with open('./config.json','r') as config_file:
         config = json.load(config_file)
         SCRAPING = config["SCRAPING"]
         utc_add_tz = SCRAPING["utc_add_tz"]
     tz = timezone(timedelta(hours=utc_add_tz[0]), utc_add_tz[1])
-    dt_now = datetime.now(tz).replace(microsecond=0, tzinfo=None)
-    print('dt_now : {}'.format(dt_now))
-    time_difference = (dt_now- datetime.fromtimestamp(int(create_time),tz=tz))
+    dt_now = datetime.now(tz).replace(microsecond=0)
+    time_difference = dt_now- datetime.fromtimestamp(int(create_time),tz=tz)
     assert time_difference.seconds <= 5
